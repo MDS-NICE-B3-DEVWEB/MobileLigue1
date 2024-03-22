@@ -44,19 +44,26 @@ function RegisterScreen({ navigation }) {
         email,
         password,
       });
-
+  
       // Handle response here
       console.log(response.data);
-
-      // Set the user in context and navigate to the home page
-      setUser(response.data);
-      navigation.navigate('Accueil');
+  
+      // Afficher un message de succès si l'inscription est réussie
+      Alert.alert('Inscription réussie', 'redirection vers la page Login.');
+  
+      // Naviguer vers la page de connexion
+      navigation.navigate('Login');
     } catch (error) {
       // Handle error here
       console.error(error);
-      Alert.alert('Error', 'An error occurred while trying to register.');
+      if (error.response && error.response.status === 422 && error.response.data && error.response.data.errorsList && error.response.data.errorsList.email) {
+        Alert.alert('Error', 'This email is already registered. Please use a different email address.');
+      } else {
+        Alert.alert('Error', 'An error occurred while trying to register.');
+      }
     }
   };
+  
 
   return (
     <View style={styles.container}>

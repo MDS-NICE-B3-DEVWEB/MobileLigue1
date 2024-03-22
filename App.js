@@ -3,8 +3,10 @@ import { View, Image, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Account from './composant/Account';
 import AccueilScreen from './composant/AccueilScreen';
 import ClassementScreen from './composant/ClassementScreen';
 import Equipetop from './composant/Equipetop';
@@ -75,6 +77,7 @@ function AuthStack() {
     <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Account" component={Account} />
     </Stack.Navigator>
   );
 }
@@ -85,23 +88,40 @@ function UserMenu({ navigation }) {
   return (
     <Menu>
       <MenuTrigger>
-        <Image source={userIcon} style={{ width: 40, height: 40 }} />
+        <TouchableOpacity onPress={() => {
+          if (user) {
+            navigation.navigate('Account');
+          } else {
+            navigation.navigate('Auth', { screen: 'Login' });
+          }
+        }}>
+          <Image source={userIcon} style={{ width: 40, height: 40 }} />
+        </TouchableOpacity>
       </MenuTrigger>
       <MenuOptions>
         {!user && (
-          <MenuOption onSelect={() => navigation.navigate('Auth', { screen: 'Login' })}>
-            <Text style={{ color: COLOR_BLACK }}>Login</Text>
-          </MenuOption>
-        )}
-        {!user && (
-          <MenuOption onSelect={() => navigation.navigate('Auth', { screen: 'Register' })}>
-            <Text style={{ color: COLOR_BLACK }}>Register</Text>
-          </MenuOption>
+          <>
+            <MenuOption onSelect={() => navigation.navigate('Auth', { screen: 'Login' })}>
+              <Text style={{ color: COLOR_BLACK }}>Login</Text>
+            </MenuOption>
+            <MenuOption onSelect={() => navigation.navigate('Auth', { screen: 'Register' })}>
+              <Text style={{ color: COLOR_BLACK }}>Register</Text>
+            </MenuOption>
+          </>
         )}
         {user && (
-          <MenuOption onSelect={() => setUser(null)}>
-            <Text style={{ color: COLOR_BLACK }}>Logout</Text>
-          </MenuOption>
+          <>
+            <MenuOption onSelect={() => navigation.navigate('Account')}>
+              <Text style={{ color: COLOR_BLACK }}>Account</Text>
+            </MenuOption>
+            <MenuOption onSelect={() => {
+              setUser(null);
+              // Supprimez le token du localStorage lors de la déconnexion
+              localStorage.removeItem('token');
+            }}>
+              <Text style={{ color: COLOR_BLACK }}>Logout</Text>
+            </MenuOption>
+          </>
         )}
       </MenuOptions>
     </Menu>
