@@ -48,6 +48,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const { setUser } = useContext(UserContext);
+  // const [User, setUser] = useState('');
 
   const handleSubmit = async () => {
     try {
@@ -62,7 +63,9 @@ const LoginScreen = () => {
       setUser(response.data.user);
 
       if (response.data.access_token) {
-        await AsyncStorage.setItem('token', response.data.access_token);
+        await AsyncStorage.setItem('token', JSON.stringify(response.data.access_token));
+        await AsyncStorage.setItem('name', response.data.user.name);
+        await AsyncStorage.setItem('email', response.data.user.email);
       } else {
         console.error('Access token is missing in the response.');
         Alert.alert('Error', 'An error occurred while trying to log in.');
@@ -76,28 +79,34 @@ const LoginScreen = () => {
       Alert.alert('Error', 'An error occurred while trying to log in.');
     }
   };
+  const token =  AsyncStorage.getItem('token');
 
-  useEffect(() => {
-    const checkLoggedIn = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        if (token) {
-          const response = await axios.get('http://164.90.163.120:8000/api/user', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+  // const checkLoggedIn = async () => {
+  //   try {
+  //     const token = await AsyncStorage.getItem('token');
+  //     console.log("token",token);
 
-          setUser(response.data);
-          navigation.navigate('Accueil');
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    checkLoggedIn();
-  }, []);
+  //     if (token) {
+  //       const response = await axios.get('http://164.90.163.120:8000/api/user', {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       setUser(response.data);
+  //       navigation.navigate('Accueil');
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+ 
+  // useEffect(() => {
+  //  checkLoggedIn();
+  //  if(token){
+  //   navigation.navigate('Accueil');
+  //   console.log("token good")
+  // }
+  // }, []);
 
   return (
     <View style={styles.container}>

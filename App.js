@@ -9,32 +9,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Account from './composant/Account';
 import AccueilScreen from './composant/AccueilScreen';
 import ClassementScreen from './composant/ClassementScreen';
+import ShowPlayer from './composant/equipe/showPlayer';
 import Equipetop from './composant/Equipetop';
 import LoginScreen from './composant/LoginScreen';
 import RegisterScreen from './composant/RegisterScreen';
 import UserContext from './composant/UserContext';
 import userIcon from './composant/img/user.png';
+import ShowTeam from './composant/equipe/showTeam'; // Importez le composant ShowTeam
 import logo_ligue1_verticale from './composant/img/logo_ligue1_verticale.png';
-import Equipe from './composant/Equipe'; // Importez le composant Equipe
-import ASM from './composant/equipe/asm'; // Importez le composant ASM
-import CM63 from './composant/equipe/cm63';
-import FCL from './composant/equipe/fcl';
-import FCM from './composant/equipe/fcm';
-import FCN from './composant/equipe/fcn';
-import HAC from './composant/equipe/hac';
-import LOSC from './composant/equipe/losc';
-import MHSC from './composant/equipe/mhsc';
-import OGCN from './composant/equipe/ogcn';
-import OL from './composant/equipe/ol';
-import OM from './composant/equipe/om';
-import PSG from './composant/equipe/psg';
-import RCL from './composant/equipe/rcl';
-import RCSA from './composant/equipe/rcsa';
-import SB29 from './composant/equipe/sb29';
-import SDR from './composant/equipe/sdr';
-import SRFC from './composant/equipe/srfc';
-import TFC from './composant/equipe/tfc';
-
+import Equipe from './composant/Equipe';
+import UserMenu from './composant/UserMenu';
+import StatScreen from './composant/StatScreen';
+import VideoScreen from './composant/VideoScreen';
+import MatchScreen from './composant/MatchScreen';
 
 
 const Drawer = createDrawerNavigator();
@@ -82,59 +69,16 @@ function AuthStack() {
   );
 }
 
-function UserMenu({ navigation }) {
-  const { user, setUser } = useContext(UserContext);
-
-  return (
-    <Menu>
-      <MenuTrigger>
-        <TouchableOpacity onPress={() => {
-          if (user) {
-            navigation.navigate('Account');
-          } else {
-            navigation.navigate('Auth', { screen: 'Login' });
-          }
-        }}>
-          <Image source={userIcon} style={{ width: 40, height: 40 }} />
-        </TouchableOpacity>
-      </MenuTrigger>
-      <MenuOptions>
-        {!user && (
-          <>
-            <MenuOption onSelect={() => navigation.navigate('Auth', { screen: 'Login' })}>
-              <Text style={{ color: COLOR_BLACK }}>Login</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('Auth', { screen: 'Register' })}>
-              <Text style={{ color: COLOR_BLACK }}>Register</Text>
-            </MenuOption>
-          </>
-        )}
-        {user && (
-          <>
-            <MenuOption onSelect={() => navigation.navigate('Account')}>
-              <Text style={{ color: COLOR_BLACK }}>Account</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => {
-              setUser(null);
-              // Supprimez le token du localStorage lors de la déconnexion
-              localStorage.removeItem('token');
-            }}>
-              <Text style={{ color: COLOR_BLACK }}>Logout</Text>
-            </MenuOption>
-          </>
-        )}
-      </MenuOptions>
-    </Menu>
-  );
-}
-
 function App() {
-  const [user, setUser] = useState(null);
+   const [user, setUser] = useState(UserContext);
+  // const { user } = useContext(UserContext);
 
   return (
     <MenuProvider>
+      
       <UserContext.Provider value={{ user, setUser }}>
         <NavigationContainer style={{ color: white }}>
+          
           <View style={{ flex: 1 }}>
             <View style={{ height: 85 }}>
               <Equipetop />
@@ -156,6 +100,7 @@ function App() {
                     ...CustomHeader({ navigation }),
                   })}
                 />
+                
                 <Drawer.Screen
                   name="Classement"
                   component={ClassementScreen}
@@ -163,7 +108,6 @@ function App() {
                     ...CustomHeader({ navigation })
                   })}
                 />
-                {/* Incluez uniquement l'écran "Equipe" */}
                 <Drawer.Screen
                   name="Equipe"
                   component={Equipe}
@@ -171,7 +115,27 @@ function App() {
                     ...CustomHeader({ navigation }),
                   })}
                 />
-                {/* Ajoutez d'autres écrans ici */}
+                <Drawer.Screen
+                  name="Statistiques"
+                  component={StatScreen}
+                  options={({ navigation }) => ({
+                    ...CustomHeader({ navigation }),
+                  })}
+                />
+                <Drawer.Screen
+                  name="Résumé vidéo"
+                  component={VideoScreen}
+                  options={({ navigation }) => ({
+                    ...CustomHeader({ navigation }),
+                  })}
+                />
+                <Drawer.Screen
+                  name="Match"
+                  component={MatchScreen}
+                  options={({ navigation }) => ({
+                    ...CustomHeader({ navigation }),
+                  })}
+                />
                 <Drawer.Screen
                   name="Auth"
                   component={AuthStack}
@@ -183,8 +147,18 @@ function App() {
                   })}
                 />
                 <Drawer.Screen
-                  name="ASM"
-                  component={ASM}
+                  name="ShowTeam"
+                  component={ShowTeam}
+                  options={({ navigation }) => ({
+                    ...CustomHeader({ navigation }),
+                    drawerLabel: () => null,
+                    title: null,
+                    drawerIcon: () => null
+                  })}
+               />
+               <Drawer.Screen
+                  name="Account"
+                  component={Account}
                   options={({ navigation }) => ({
                     ...CustomHeader({ navigation }),
                     drawerLabel: () => null,
@@ -193,8 +167,8 @@ function App() {
                   })}
                 />
                 <Drawer.Screen
-                  name="CM63"
-                  component={CM63}
+                  name="ShowPlayer"
+                  component={ShowPlayer}
                   options={({ navigation }) => ({
                     ...CustomHeader({ navigation }),
                     drawerLabel: () => null,
@@ -202,166 +176,6 @@ function App() {
                     drawerIcon: () => null
                   })}
                 />
-                <Drawer.Screen
-                  name="FCL"
-                  component={FCL}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                />
-                <Drawer.Screen
-                  name="FCM"
-                  component={FCM}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                />
-                <Drawer.Screen
-                  name="FCN"
-                  component={FCN}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                />
-                <Drawer.Screen
-                  name="HAC"
-                  component={HAC}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                />
-                <Drawer.Screen
-                  name="LOSC"
-                  component={LOSC}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                />
-                <Drawer.Screen
-                  name="MHSC"
-                  component={MHSC}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                />
-                <Drawer.Screen
-                  name="OGCN"
-                  component={OGCN}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                />
-                <Drawer.Screen
-                  name="OL"
-                  component={OL}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                />
-                <Drawer.Screen
-                  name="OM"
-                  component={OM}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                  />
-                <Drawer.Screen
-                  name="PSG"
-                  component={PSG}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                  />
-                <Drawer.Screen
-                  name="RCL"
-                  component={RCL}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                  />
-                <Drawer.Screen
-                  name="RCSA"
-                  component={RCSA}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                  />
-                <Drawer.Screen
-                  name="SB29"
-                  component={SB29}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                  />
-                <Drawer.Screen
-                  name="SDR"
-                  component={SDR}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                  />
-                <Drawer.Screen
-                  name="SRFC"
-                  component={SRFC}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                  />
-                  <Drawer.Screen
-                  name="TFC"
-                  component={TFC}
-                  options={({ navigation }) => ({
-                    ...CustomHeader({ navigation }),
-                    drawerLabel: () => null,
-                    title: null,
-                    drawerIcon: () => null
-                  })}
-                  />
               </Drawer.Navigator>
             </View>
           </View>

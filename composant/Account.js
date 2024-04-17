@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import UserContext from './UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -42,27 +42,30 @@ const Account = () => {
   const navigation = useNavigation(); // Utilisation de useNavigation pour obtenir l'objet de navigation
 
   useEffect(() => {
-    const checkLoggedIn = async () => {
+    const getData = async () => {
       try {
-        const token = await AsyncStorage.getItem('token');
-        if (token) {
-          // L'utilisateur est connecté, effectuez les actions nécessaires
+        const name = await AsyncStorage.getItem('name');
+        const email = await AsyncStorage.getItem('email');
+        if (name !== null && email !== null) {
+          setUser({ name, email });
         }
       } catch (error) {
         console.error(error);
       }
     };
+    
 
-    checkLoggedIn();
-
+    getData();
   }, []);
 
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('name');
+      await AsyncStorage.removeItem('email');
       setUser(null);
       // Après la déconnexion, naviguer vers l'écran de connexion
-      navigation.navigate('Login');
+      navigation.navigate('Accueil');
     } catch (error) {
       console.error(error);
     }

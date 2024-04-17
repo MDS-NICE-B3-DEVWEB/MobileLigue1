@@ -1,8 +1,7 @@
 import React from 'react';
-import { ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native'; // Import TouchableOpacity from react-native
+import { ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-// Importer les images locales
 import asm from './img/asm.png';
 import cm63 from './img/cm63.png';
 import fcl from './img/fcl.png';
@@ -23,41 +22,41 @@ import srfc from './img/srfc.png';
 import tfc from './img/tfc.png';
 
 const images = [
-  {source: asm, name: 'ASM'},
-  {source: cm63, name: 'CM63'},
-  {source: fcl, name: 'FCL'},
-  {source: fcm, name: 'FCM'},
-  {source: fcn, name: 'FCN'},
-  {source: hac, name: 'HAC'},
-  {source: losc, name: 'LOSC'},
-  {source: mhsc, name: 'MHSC'},
-  {source: ogcn, name: 'OGCN'},
-  {source: ol, name: 'OL'},
-  {source: om, name: 'OM'},
-  {source: psg, name: 'PSG'},
-  {source: rcl, name: 'RCL'},
-  {source: rcsa, name: 'RCSA'},
-  {source: sb29, name: 'SB29'},
-  {source: sdr, name: 'SDR'},
-  {source: srfc, name: 'SRFC'},
-  {source: tfc, name: 'TFC'},  
+  { source: asm, id_equipe: 76 },
+  { source: cm63, id_equipe: 622 },
+  { source: fcl, id_equipe: 545 },
+  { source: fcm, id_equipe: 120 },
+  { source: fcn, id_equipe: 60 },
+  { source: hac, id_equipe: 625 },
+  { source: losc, id_equipe: 69 },
+  { source: mhsc, id_equipe: 65 },
+  { source: ogcn, id_equipe: 64 },
+  { source: ol, id_equipe: 61 },
+  { source: om, id_equipe: 59 },
+  { source: psg, id_equipe: 66 },
+  { source: rcl, id_equipe: 546 },
+  { source: rcsa, id_equipe: 68 },
+  { source: sb29, id_equipe: 121 },
+  { source: sdr, id_equipe: 72 },
+  { source: srfc, id_equipe: 67 },
+  { source: tfc, id_equipe: 63 },
 ];
 
 const Equipetop = () => {
   const navigation = useNavigation();
 
-  const handleImagePress = (teamName) => {
-    navigation.navigate(teamName);
+  const handleImagePress = (id_equipe) => {
+    navigation.navigate('ShowTeam', { id_equipe: id_equipe });
   };
 
   return (
-    <ScrollView 
-      horizontal 
-      style={styles.container} 
+    <ScrollView
+      horizontal
+      style={styles.container}
       showsHorizontalScrollIndicator={false}
     >
-        {images.map((image, index) => (
-        <TouchableOpacity key={index} onPress={() => handleImagePress(image.name)}>
+      {images.map((image, index) => (
+        <TouchableOpacity key={index} onPress={() => handleImagePress(image.id_equipe)}>
           <Image source={image.source} style={styles.image} />
         </TouchableOpacity>
       ))}
@@ -69,10 +68,10 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 35,
-    backgroundColor :'#02153C',
+    backgroundColor: '#02153C',
   },
   image: {
-    width: 50, // Vous pouvez ajuster la largeur et la hauteur comme vous le souhaitez
+    width: 50,
     height: 50,
   },
 });
