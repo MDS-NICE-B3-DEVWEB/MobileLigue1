@@ -8,7 +8,7 @@ const ShowPlayer = ({ route }) => {
   useEffect(() => {
     const fetchPlayerData = async () => {
       try {
-        const response = await fetch(`http://164.90.163.120:8000/api/joueur?id_saison=269&id_joueur=${playerID}`);
+        const response = await fetch(`https://api.ligue1.live/api/joueur?id_saison=269&id_joueur=${playerID}`);
         const data = await response.json();
         
         // Vérifie si la réponse contient des données de joueur valides

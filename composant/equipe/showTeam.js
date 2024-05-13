@@ -9,7 +9,7 @@ const ShowTeam = (props) => {
   useEffect(() => {
     const fetchTeamData = async () => {
       try {
-        const response = await fetch(`http://164.90.163.120:8000/api/equipe?id_saison=269&id_equipe=${props.route.params.id_equipe}`);
+        const response = await fetch(`https://api.ligue1.live/api/equipe?id_saison=269&id_equipe=${props.route.params.id_equipe}`);
         const data = await response.json();
         setTeamData(data.items.team);
       } catch (error) {

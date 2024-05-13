@@ -39,7 +39,7 @@ function RegisterScreen({ navigation }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://164.90.163.120:8000/api/register', {
+      const response = await axios.post('https://api.ligue1.live/api/register', {
         name,
         email,
         password,

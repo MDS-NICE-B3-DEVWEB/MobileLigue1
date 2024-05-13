@@ -11,7 +11,7 @@ const MatchScreen = () => {
 
   const fetchMatches = async () => {
     try {
-      const response = await fetch('http://164.90.163.120:8000/api/match?id_saison=269', {
+      const response = await fetch('https://api.ligue1.live/api/match?id_saison=269', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

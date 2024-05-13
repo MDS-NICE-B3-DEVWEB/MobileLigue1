@@ -52,7 +52,7 @@ const LoginScreen = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.get('http://164.90.163.120:8000/api/login', {
+      const response = await axios.get('https://api.ligue1.live/api/login', {
         params: {
           email,
           password,

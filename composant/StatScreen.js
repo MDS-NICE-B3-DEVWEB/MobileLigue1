@@ -10,7 +10,7 @@ const StatScreen = () => {
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
-        const goalScorersResponse = await fetch('http://164.90.163.120:8000/api/stat?id_saison=269&id_event=1');
+        const goalScorersResponse = await fetch('https://api.ligue1.live/api/stat?id_saison=269&id_event=1');
         const goalScorersData = await goalScorersResponse.json();
         if (goalScorersData && goalScorersData.items && goalScorersData.items.season && goalScorersData.items.season.players) {
           setGoalScorers(goalScorersData.items.season.players);
@@ -19,7 +19,7 @@ const StatScreen = () => {
         }
 
         // Fetch for assist providers
-        const assistProvidersResponse = await fetch('http://164.90.163.120:8000/api/stat?id_saison=269&id_event=2');
+        const assistProvidersResponse = await fetch('https://api.ligue1.live/api/stat?id_saison=269&id_event=2');
         const assistProvidersData = await assistProvidersResponse.json();
         if (assistProvidersData && assistProvidersData.items && assistProvidersData.items.season && assistProvidersData.items.season.players) {
           setAssistProviders(assistProvidersData.items.season.players);
@@ -28,7 +28,7 @@ const StatScreen = () => {
         }
 
         // Fetch for own goal scorers
-        const ownGoalScorersResponse = await fetch('http://164.90.163.120:8000/api/stat?id_saison=269&id_event=3');
+        const ownGoalScorersResponse = await fetch('https://api.ligue1.live/api/stat?id_saison=269&id_event=3');
         const ownGoalScorersData = await ownGoalScorersResponse.json();
         if (ownGoalScorersData && ownGoalScorersData.items && ownGoalScorersData.items.season && ownGoalScorersData.items.season.players) {
           setOwnGoalScorers(ownGoalScorersData.items.season.players);
@@ -37,7 +37,7 @@ const StatScreen = () => {
         }
 
         // Fetch for penalty scorers
-        const penaltyScorersResponse = await fetch('http://164.90.163.120:8000/api/stat?id_saison=269&id_event=4');
+        const penaltyScorersResponse = await fetch('https://api.ligue1.live/api/stat?id_saison=269&id_event=4');
         const penaltyScorersData = await penaltyScorersResponse.json();
         if (penaltyScorersData && penaltyScorersData.items && penaltyScorersData.items.season && penaltyScorersData.items.season.players) {
           setPenaltyScorers(penaltyScorersData.items.season.players);

@@ -65,7 +65,7 @@ function ClassementScreen({ navigation }) {
 
     useEffect(() => {
         const id_saison = '269';
-        fetch(`http://164.90.163.120:8000/api/classement?id_saison=${id_saison}`, {
+        fetch(`https://api.ligue1.live/api/classement?id_saison=${id_saison}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
