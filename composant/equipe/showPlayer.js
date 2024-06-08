@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import iconsanstete from '../img/iconsanstete.png';
 
 const ShowPlayer = ({ route }) => {
   const { playerID } = route.params;
@@ -34,7 +35,7 @@ const ShowPlayer = ({ route }) => {
             <Image source={{ uri: playerData.photo }} style={styles.playerImage} />
           ) : (
             // Affichage d'un carré de couleur si l'image n'est pas disponible
-            <View style={styles.placeholderImage} />
+            <Image source={iconsanstete} style={styles.playerImage} />
           )}
           <Text style={styles.playerName}>{playerData.fullName}</Text>
           <Text style={styles.playerInfo}>Pays: {playerData.country.name}</Text>
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   errorText: {
-    color: 'red',
+    color: 'white',
     fontSize: 18,
   },
   playerImage: {

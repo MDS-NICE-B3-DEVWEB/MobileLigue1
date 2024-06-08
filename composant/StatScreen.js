@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import iconsanstete from './img/iconsanstete.png';
 
 const StatScreen = () => {
   const [goalScorers, setGoalScorers] = useState([]);
@@ -58,7 +59,11 @@ const StatScreen = () => {
         <ScrollView horizontal={true} style={styles.playerContainer}>
           {goalScorers.map((player, index) => (
             <View key={index} style={styles.player}>
-              <Image source={{ uri: player.photo }} style={styles.playerImage} />
+              {player.photo ? (
+                    <Image source={{ uri: player.photo }} style={styles.playerImage} />
+                  ) : (
+                    <Image source={iconsanstete} style={styles.playerImage} />
+                  )}
               <Text style={styles.playerName}>{player.fullname}</Text>
               <Text style={styles.playerInfo}>Équipe: {player.teamname}</Text>
               <Text style={styles.playerInfo}>Nombre de buts: {player.eventCount}</Text>
@@ -76,7 +81,11 @@ const StatScreen = () => {
         <ScrollView horizontal={true} style={styles.playerContainer}>
           {assistProviders.map((player, index) => (
             <View key={index} style={styles.player}>
-              <Image source={{ uri: player.photo }} style={styles.playerImage} />
+              {player.photo ? (
+                    <Image source={{ uri: player.photo }} style={styles.playerImage} />
+                  ) : (
+                    <Image source={iconsanstete} style={styles.playerImage} />
+                  )}
               <Text style={styles.playerName}>{player.fullname}</Text>
               <Text style={styles.playerInfo}>Équipe: {player.teamname}</Text>
               <Text style={styles.playerInfo}>Nombre de passes décisives: {player.eventCount}</Text>
@@ -94,7 +103,11 @@ const StatScreen = () => {
         <ScrollView horizontal={true} style={styles.playerContainer}>
           {ownGoalScorers.map((player, index) => (
             <View key={index} style={styles.player}>
-              <Image source={{ uri: player.photo }} style={styles.playerImage} />
+              {player.photo ? (
+                    <Image source={{ uri: player.photo }} style={styles.playerImage} />
+                  ) : (
+                    <Image source={iconsanstete} style={styles.playerImage} />
+                  )}
               <Text style={styles.playerName}>{player.fullname}</Text>
               <Text style={styles.playerInfo}>Équipe: {player.teamname}</Text>
               <Text style={styles.playerInfo}>Nombre de CSC: {player.eventCount}</Text>
@@ -112,7 +125,11 @@ const StatScreen = () => {
         <ScrollView horizontal={true} style={styles.playerContainer}>
           {penaltyScorers.map((player, index) => (
             <View key={index} style={styles.player}>
-              <Image source={{ uri: player.photo }} style={styles.playerImage} />
+              {player.photo ? (
+                    <Image source={{ uri: player.photo }} style={styles.playerImage} />
+                  ) : (
+                    <Image source={iconsanstete} style={styles.playerImage} />
+                  )}
               <Text style={styles.playerName}>{player.fullname}</Text>
               <Text style={styles.playerInfo}>Équipe: {player.teamname}</Text>
               <Text style={styles.playerInfo}>Nombre de penalties: {player.eventCount}</Text>

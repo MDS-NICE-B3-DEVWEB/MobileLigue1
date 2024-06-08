@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import iconsanstete from '../img/iconsanstete.png';
 
 const ShowTeam = (props) => {
   const [teamData, setTeamData] = useState(null);
@@ -40,7 +41,7 @@ const ShowTeam = (props) => {
                   {player.photo ? (
                     <Image source={{ uri: player.photo }} style={styles.playerImage} />
                   ) : (
-                    <View style={styles.playerImagePlaceholder} />
+                    <Image source={iconsanstete} style={styles.playerImage} />
                   )}
                   <Text style={styles.playerName}>{player.fullName}</Text>
                   <Text style={styles.playerNumber}>#{player.playerNumber}</Text>
