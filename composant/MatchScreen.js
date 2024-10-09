@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select'; // Import RNPickerSelect
+
 
 const MatchScreen = () => {
   const [matches, setMatches] = useState([]);
   const [selectedMatchday, setSelectedMatchday] = useState(null);
+  const [selectedSeasonId, setSelectedSeasonId] = useState('358'); // État initialisé avec l'ID de la saison par défaut
+  const seasons = [ // Tableau des saisons et leurs IDs
+    { name: '2018-19', id: '4' },
+    { name: '2019-20', id: '23' },
+    { name: '2020-21', id: '55' },
+    { name: '2021-22', id: '110' },
+    { name: '2022-23', id: '167' },
+    { name: '2023-24', id: '269' },
+    { name: '2024-25', id: '358' },
+    // Ajoutez d'autres saisons ici
+  ];
 
   useEffect(() => {
     fetchMatches();
-  }, []);
+  }, [selectedSeasonId]);
 
   const fetchMatches = async () => {
     try {
-      const response = await fetch('https://api.ligue1.live/api/match?id_saison=269', {
+      const response = await fetch(`https://api.ligue1.live/api/match?id_saison=${selectedSeasonId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -20,7 +33,6 @@ const MatchScreen = () => {
       const data = await response.json();
       if (data && data.items && data.items.calendar && data.items.calendar.matchdays) {
         setMatches(data.items.calendar.matchdays);
-        // Sélectionner la première journée de match par défaut
         if (data.items.calendar.matchdays.length > 0) {
           setSelectedMatchday(data.items.calendar.matchdays[0].matchdayID);
         }
@@ -74,7 +86,20 @@ const MatchScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topSection}></View>
+      <RNPickerSelect
+        onValueChange={(value) => setSelectedSeasonId(value)}
+        items={[
+          { label: '2018-19', value: '4' },
+          { label: '2019-20', value: '23' },
+          { label: '2020-21', value: '55' },
+          { label: '2021-22', value: '110' },
+          { label: '2022-23', value: '167' },
+          { label: '2023-24', value: '269' },
+          { label: '2024-25', value: '358' },
+        ]}
+        placeholder={{ label: 'Select a season', value: null }}
+        style={{ ...pickerSelectStyles }}
+      />
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {renderMatchdays()}
       </ScrollView>
@@ -85,14 +110,35 @@ const MatchScreen = () => {
   );
 };
 
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+   
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'white',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'purple',
+    borderRadius: 8,
+    color: 'white',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#02153C',
-  },
-  topSection: {
-    height: 20,
-    backgroundColor: '#02153C', // Même couleur que le background
   },
   scrollViewContainer: {
     flexGrow: 1,

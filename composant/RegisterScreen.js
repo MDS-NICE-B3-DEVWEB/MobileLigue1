@@ -37,20 +37,52 @@ function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      return "Le mot de passe doit contenir au moins 8 caractères.";
+    }
+    if (!/[A-Z]/.test(password)) {
+      return "Le mot de passe doit inclure une majuscule.";
+    }
+    if (!/[a-z]/.test(password)) {
+      return "Le mot de passe doit inclure une minuscule.";
+    }
+    if (!/[0-9]/.test(password)) {
+      return "Le mot de passe doit inclure un nombre.";
+    }
+    if (!/[^A-Za-z0-9]/.test(password)) {
+      return "Le mot de passe doit inclure un caractère spécial.";
+    }
+    return "";
+  };
+
   const handleSubmit = async () => {
+    // Validate email
+    if (!email.includes('@')) {
+      Alert.alert('Error', 'Veuillez entrer une adresse email valide.');
+      return;
+    }
+
+    // Validate password
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      Alert.alert('Error', passwordError);
+      return;
+    }
+
     try {
       const response = await axios.post('https://api.ligue1.live/api/register', {
         name,
         email,
         password,
       });
-  
+
       // Handle response here
       console.log(response.data);
-  
+
       // Afficher un message de succès si l'inscription est réussie
-      Alert.alert('Inscription réussie', 'redirection vers la page Login.');
-  
+      Alert.alert('Inscription réussie', 'Vous êtes maintenant inscrit.');
+
       // Naviguer vers la page de connexion
       navigation.navigate('Login');
     } catch (error) {
@@ -63,7 +95,6 @@ function RegisterScreen({ navigation }) {
       }
     }
   };
-  
 
   return (
     <View style={styles.container}>
@@ -72,14 +103,14 @@ function RegisterScreen({ navigation }) {
         value={name}
         onChangeText={setName}
         placeholder="Name"
-        placeholderTextColor="white" // Set placeholder text color to white
+        placeholderTextColor="white"
       />
       <TextInput
         style={styles.input}
         value={email}
         onChangeText={setEmail}
         placeholder="Email"
-        placeholderTextColor="white" // Set placeholder text color to white
+        placeholderTextColor="white"
       />
       <TextInput
         style={styles.input}
@@ -87,7 +118,7 @@ function RegisterScreen({ navigation }) {
         onChangeText={setPassword}
         placeholder="Password"
         secureTextEntry
-        placeholderTextColor="white" // Set placeholder text color to white
+        placeholderTextColor="white"
       />
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Inscription</Text>
